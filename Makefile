@@ -19,7 +19,7 @@ server = server
 clientdir = ./Client
 serverdir = ./Server
 libdir = ./Libs
-cxxflags ?= -W -Wall -Wextra -ansi -g
+cxxflags ?= -W -Wall -Wextra -std=c99 -g #-ansi
 ldflags ?=
 libs ?= #-lcurl -lpcrecpp -lyaml-cpp -largtable2 -lsqlite3 -lboost_filesystem -lboost_system
 includes ?= -I${libdir}
