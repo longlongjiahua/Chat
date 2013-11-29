@@ -49,6 +49,16 @@ int main(int argc, char *argv[])
       diep("sendto()");
   }
 
+  while(1)
+  {
+    if(recvfrom(s, buf, BUFLEN, 0, &si_other, &slen)==-1)
+    {}
+    else {
+      printf("%s\n", buf);
+      break;
+    }
+  }
+
   close(s);
   return 0;
 }

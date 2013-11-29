@@ -7,10 +7,12 @@
 
 #include "net.h"
 
-void react(int sock, char buf[], struct sockaddr_in si_other)
+void react(int sock, char buf[], struct sockaddr_in si_other, int slen)
 {
   printf("Received packet from %s:%d\nData: %s\n\n", 
       inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port), buf);
+
+
 }
 
 int main(int argc, char *argv[])
@@ -41,7 +43,12 @@ int main(int argc, char *argv[])
       diep("fork");
     if(pid == 0)
     {
-      react(sock, buf, si_other);
+      react(sock, buf, si_other, slen);
+      sleep(5);
+      printf("sending ack.\n");
+      sprintf(buf, "recieved your message!\n");
+      if (sendto(sock, buf, strlen(buf), 0, (struct sockaddr*) &si_other, slen)==-1)
+        diep("failed to send");
       exit(0);
     }
     /*printf("Received packet from %s:%d\nData: %s\n\n", 
