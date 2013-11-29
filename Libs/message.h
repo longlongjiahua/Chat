@@ -3,6 +3,12 @@
 
 #include "net.h"
 
+#define UNITSEP 31
+#define RECORDSEP 30
+
+#define HELPSTRING(s) #s
+#define STRINGIFY(s) HELPSTRING(s) 
+
 enum msgtype
 {
   GET,
@@ -21,8 +27,5 @@ typedef struct Message
 
 void mestoa(char* const buf, Message const * const message);
 Message atomes(char const * const mes);
-
-void storemessage(Message const * const mes);
-char* pullmessages(char* destination);
 
 #endif

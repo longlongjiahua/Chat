@@ -7,9 +7,6 @@
 #include <netinet/in.h>
 #include <sys/stat.h>
 
-#define UNITSEP 31
-#define RECORDSEP 30
-
 char delims[1] = {UNITSEP};
 
 void mestoa(char* const buf, Message const * const message)
@@ -52,13 +49,5 @@ Message atomes(char const * const mes)
   free(src);
 
   return message;
-}
-
-void storemessage(Message const * const mes)
-{  
-  FILE *fp;
-  fp = fopen(mes->destination, "a+");
-  fprintf(fp, "%s%c%s%c", mes->source, UNITSEP, mes->message, RECORDSEP);
-  fclose(fp);
 }
 
