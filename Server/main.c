@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
       else if(mes.type == ACK)
       {
         unsigned int hash = qhash(mes.source);
+        if(*(seqhash+hash) < mes.seq)
+          *(seqhash+hash) = mes.seq;
       }
 
       exit(0);
