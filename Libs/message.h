@@ -5,9 +5,9 @@
 
 typedef struct Message
 {
-  char destination[20];
-  char source[20];
   int seq;
+  char source[20];
+  char destination[20];
   char message[BUFLEN];
 } Message;
 
