@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   while(1)
   {
     if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr * restrict) &sockaddclient, (socklen_t * restrict) &slen)==-1)
-      diep("recvfrom()");
+      diep("Failed on recieving.");
     int pid = fork();
     if(pid < 0)
       diep("fork");

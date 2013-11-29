@@ -3,9 +3,16 @@
 
 #include "net.h"
 
+enum msgtype
+{
+  GET,
+  SEND
+};
+
 typedef struct Message
 {
   int seq;
+  enum msgtype type;
   char source[20];
   char destination[20];
   char message[BUFLEN];

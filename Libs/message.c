@@ -16,6 +16,10 @@ void mestoa(char* const buf, Message const * const message)
   strcat(buf, num);
   strcat(buf, delims);
 
+  sprintf(num, "%d", htonl(message->type));
+  strcat(buf, num);
+  strcat(buf, delims);
+
   strcat(buf, message->source);
   strcat(buf, delims);
 
@@ -33,6 +37,7 @@ Message atomes(char const * const mes)
   strcpy(src, mes);
 
   message.seq = ntohl(atoi(strtok(src, delims)));
+  message.type = ntohl(atoi(strtok(src, delims)));
   strcpy(message.source, strtok(NULL, delims));
   strcpy(message.destination, strtok(NULL, delims));
   strcpy(message.message, strtok(NULL, delims));
