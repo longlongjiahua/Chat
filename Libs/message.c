@@ -43,6 +43,7 @@ Message atomes(char const * const mes)
   strcpy(message.source, strtok(NULL, delims));
   strcpy(message.destination, strtok(NULL, delims));
   strcpy(message.message, strtok(NULL, delims));
+  printf("bs2\n");
 
   free(src);
 

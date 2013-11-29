@@ -52,7 +52,9 @@ int main(int argc, char *argv[])
       diep("fork");
     if(pid == 0)
     {
+      printf("bs1\n");
       Message mes = atomes(buf);
+      printf("%d\n", mes.type);
       if(mes.type = GET)
         actGet(mes, s, sockaddclient);
       else if(mes.type = SEND)
