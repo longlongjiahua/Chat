@@ -54,12 +54,12 @@ int main(int argc, char *argv[])
     {
       printf("bs1\n");
       Message mes = atomes(buf);
-      printf("%d\n", mes.type);
-      if(mes.type = GET)
+      printf("%d%d%d\n", mes.type, GET, SEND);
+      if(mes.type == GET)
         actGet(mes, s, sockaddclient);
-      else if(mes.type = SEND)
+      else if(mes.type == SEND)
         actSend(mes, s, sockaddclient);
-      else if(mes.type = ACK)
+      else if(mes.type == ACK)
       {}
       printf("sending ack.\n");
       sprintf(buf, "recieved your message!\n");

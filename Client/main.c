@@ -31,15 +31,15 @@ int main(int argc, char *argv[])
   //case for get message from server
   if(argc == 5 && strncmp(argv[4], "GET",3)==0  ){
     printf("get\n");
-    mes = (Message)
-      { 0
-      , GET
-      , argv[1]
-      , ""
-      , ""
-      };
+
+    mes.seq = 0;
+    mes.type = GET;
+    strcpy(mes.source, argv[1]);
+    strcpy(mes.destination, "null");
+    strcpy(mes.message, "null");
+
     mestoa(&buf, &mes);
-    printf("bs1:%s\n",buf);
+
     if (sendto(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, slen)==-1)
       diep("Can not send message to server");
     while(1) {  //receive message from client 1;
@@ -60,13 +60,12 @@ int main(int argc, char *argv[])
       diep(err);
     }
 
-    mes = (Message)
-    { 0
-    , SEND
-    , argv[1]
-    , argv[5]
-    , argv[6]
-    };
+    mes.seq = 0;
+    mes.type = SEND;
+    strcpy(mes.source, argv[1]);
+    strcpy(mes.destination, argv[5]);
+    strcpy(mes.message, argv[6]);
+
     mestoa(&buf, &mes);
 
     if (sendto(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, slen)==-1)

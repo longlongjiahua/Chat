@@ -39,11 +39,11 @@ Message atomes(char const * const mes)
   strcpy(src, mes);
 
   message.seq = ntohl(atoi(strtok(src, delims)));
-  message.type = ntohl(atoi(strtok(src, delims)));
+  message.type = ntohl(atoi(strtok(NULL, delims)));
   strcpy(message.source, strtok(NULL, delims));
   strcpy(message.destination, strtok(NULL, delims));
-  strcpy(message.message, strtok(NULL, delims));
   printf("bs2\n");
+  strcpy(message.message, strtok(NULL, delims));
 
   free(src);
 
