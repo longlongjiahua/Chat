@@ -52,7 +52,7 @@ clean:
 
 .PHONY: linecount
 linecount:
-	-@wc -l ${shell find ${clientdir} ${serverdir} -regex ".*\.\(h\|c\)$$"}
+	-@wc -l ${shell find ${clientdir} ${serverdir} ${libdir} -regex ".*\.\(h\|c\)$$"}
 
 ${client}: ${clientobjects} ${libobjects}
 	${CXX} ${ldflags} ${includes} ${clientobjects} ${libobjects} -o ${client} ${libs}

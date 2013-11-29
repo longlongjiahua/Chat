@@ -43,5 +43,6 @@ int mksocket()
 void diep(char *s)
 {
   perror(s);
+  printf("\n\n");
   exit(1);
 }

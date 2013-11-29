@@ -10,17 +10,24 @@
 #include "net.h"
 #include "message.h"
 
-void react(int sock, char buf[], struct sockaddr_in sockaddclient, int slen)
+void actGet(Message mes, int s, struct sockaddr_in sockadd)
 {
-  printf("Received packet from %s:%d\nData: %s\n\n", 
-      inet_ntoa(sockaddclient.sin_addr), ntohs(sockaddclient.sin_port), buf);
+  printf("Get request!\n\tFrom: %s@%s:%d\n"
+      , mes.source
+      , inet_ntoa(sockadd.sin_addr)
+      , ntohs(sockadd.sin_port)
+      );
 }
 
-void actGet()
-{}
-
-void actSend()
+void actSend(Message mes, int s, struct sockaddr_in sockadd)
 {
+  printf("Message!\n\tFrom: %s@%s:%d\n\tTo: %s\n\t%s\n"
+      , mes.source
+      , inet_ntoa(sockadd.sin_addr)
+      , ntohs(sockadd.sin_port)
+      , mes.destination
+      , mes.message
+      );
 }
 
 int main(int argc, char *argv[])
@@ -47,11 +54,11 @@ int main(int argc, char *argv[])
     {
       Message mes = atomes(buf);
       if(mes.type = GET)
-      {}
+        actGet(mes, s, sockaddclient);
       else if(mes.type = SEND)
+        actSend(mes, s, sockaddclient);
+      else if(mes.type = ACK)
       {}
-      react(s, buf, sockaddclient, slen);
-      sleep(5);
       printf("sending ack.\n");
       sprintf(buf, "recieved your message!\n");
       if (sendto(s, buf, strlen(buf), 0, (struct sockaddr*) &sockaddclient, slen)==-1)
