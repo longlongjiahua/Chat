@@ -9,18 +9,18 @@
 
 #include "net.h"
 
-void react(int sock, char buf[], struct sockaddr_in si_other, int slen)
+void react(int sock, char buf[], struct sockaddr_in sockaddclient, int slen)
 {
   printf("Received packet from %s:%d\nData: %s\n\n", 
-      inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port), buf);
+      inet_ntoa(sockaddclient.sin_addr), ntohs(sockaddclient.sin_port), buf);
 
 
 }
 
 int main(int argc, char *argv[])
 {
-  struct sockaddr_in sockaddserver, si_other;
-  int s, slen=sizeof(si_other);
+  struct sockaddr_in sockaddserver, sockaddclient;
+  int s, slen=sizeof(sockaddclient);
   char buf[BUFLEN];
 
   if (argc < 2)
@@ -32,23 +32,23 @@ int main(int argc, char *argv[])
 
   while(1)
   {
-    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr * restrict) &si_other, (socklen_t * restrict) &slen)==-1)
+    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr * restrict) &sockaddclient, (socklen_t * restrict) &slen)==-1)
       diep("recvfrom()");
     int pid = fork();
     if(pid < 0)
       diep("fork");
     if(pid == 0)
     {
-      react(s, buf, si_other, slen);
+      react(s, buf, sockaddclient, slen);
       sleep(5);
       printf("sending ack.\n");
       sprintf(buf, "recieved your message!\n");
-      if (sendto(s, buf, strlen(buf), 0, (struct sockaddr*) &si_other, slen)==-1)
+      if (sendto(s, buf, strlen(buf), 0, (struct sockaddr*) &sockaddclient, slen)==-1)
         diep("failed to send");
       exit(0);
     }
     /*printf("Received packet from %s:%d\nData: %s\n\n", 
-                inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port), buf);*/
+                inet_ntoa(sockaddclient.sin_addr), ntohs(sockaddclient.sin_port), buf);*/
   }
 
   close(s);
