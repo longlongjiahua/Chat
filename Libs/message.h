@@ -11,7 +11,9 @@ typedef struct Message
   char message[BUFLEN];
 } Message;
 
-char* mestoa(Message message);
-Message atomes(char* mes);
+void mestoa(char* const buf, Message const * const message);
+Message atomes(char const * const mes);
+
+char delims[1] = {7};
 
 #endif

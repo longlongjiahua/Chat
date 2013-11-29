@@ -2,24 +2,42 @@
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
-char* mestoa(Message message)
-{}
+void mestoa(char* const buf, Message const * const message)
+{
+  char num[20];
 
-Message atomes(char* mes)
+  strcpy(buf, "");
+
+  sprintf(num, "%d", htonl(message->seq));
+  strcat(buf, num);
+  strcat(buf, delims);
+
+  strcat(buf, message->source);
+  strcat(buf, delims);
+
+  strcat(buf, message->destination);
+  strcat(buf, delims);
+
+  strcat(buf, message->message);
+  strcat(buf, delims);
+}
+
+Message atomes(char const * const mes)
 {
   Message message;
   char* src = malloc(strlen(mes));
   strcpy(src, mes);
 
-  char delims[1] = {7};
-
   message.seq = ntohl(atoi(strtok(src, delims)));
   strcpy(message.source, strtok(NULL, delims));
   strcpy(message.destination, strtok(NULL, delims));
   strcpy(message.message, strtok(NULL, delims));
+
+  free(src);
 
   return message;
 }
