@@ -10,6 +10,16 @@
 #include "net.h"
 #include "message.h"
 
+void ack(int s, struct sockaddr_in const * const sockadd)
+{
+  Message mes = {0, ACK, "null", "null", "null"};
+  char buf[BUFLEN];
+  mestoa(&buf, &mes);
+
+  if (sendto(s, buf, BUFLEN, 0, (struct sockaddr*) sockadd, sizeof(*sockadd))==-1)
+    diep("failed to ack");
+}
+
 void actGet(Message mes, int s, struct sockaddr_in sockadd)
 {
   printf("Get request!\n\tFrom: %s@%s:%d\n"
@@ -17,6 +27,8 @@ void actGet(Message mes, int s, struct sockaddr_in sockadd)
       , inet_ntoa(sockadd.sin_addr)
       , ntohs(sockadd.sin_port)
       );
+
+  ack(s, &sockadd);
 }
 
 void actSend(Message mes, int s, struct sockaddr_in sockadd)
@@ -28,6 +40,9 @@ void actSend(Message mes, int s, struct sockaddr_in sockadd)
       , mes.destination
       , mes.message
       );
+
+  storemessage(&mes);
+  ack(s, &sockadd);
 }
 
 int main(int argc, char *argv[])
@@ -61,10 +76,7 @@ int main(int argc, char *argv[])
         actSend(mes, s, sockaddclient);
       else if(mes.type == ACK)
       {}
-      printf("sending ack.\n");
-      sprintf(buf, "recieved your message!\n");
-      if (sendto(s, buf, strlen(buf), 0, (struct sockaddr*) &sockaddclient, slen)==-1)
-        diep("failed to send");
+
       exit(0);
     }
     /*printf("Received packet from %s:%d\nData: %s\n\n", 

@@ -12,17 +12,6 @@ main.c will hold the simple setup/teardown and loop/fork. All other functions wi
     make clean
     make linecount
 
-TODO
-====
-* ~~makefiles~~
-* ~~simple UDP server/client~~
-* ~~forking server~~
-* forking client
-* message format
-* handle sequence numbers
-* respond to acks
-* ...
-
 Client
 ===
 
@@ -39,7 +28,7 @@ Getting: input (myname, server ip, port, GET)
 Server
 ===
 
-Recieve message
+~~Recieve message~~
 * fork
 * hash, and check against last message in the file for duplicates (optional, add after everything else)
 * append message to destination's file
