@@ -6,6 +6,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include "net.h"
 #include "message.h"
@@ -68,17 +69,38 @@ int main(int argc, char *argv[])
 
     mestoa(&buf, &mes);
 
-    if (sendto(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, slen)==-1)
-      diep("message failed");
-
     while(1)
     {
-      if(recvfrom(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, (socklen_t * restrict) &slen)==-1)
-      {}
-      else {
+      if (sendto(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, slen)==-1)
+        diep("message failed");
+
+      int pid = fork();
+      if(pid==0)
+      {
+        if(recvfrom(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, (socklen_t * restrict) &slen)==-1)
+          diep("failed recieval of ack.");
         printf("%s\n", buf);
+        exit(0);
+      }
+
+      int timerpid = fork();
+      if(timerpid==0)
+      {
+        sleep(2);
+        exit(0);
+      }
+
+      int firsttodie = wait(NULL);
+      if(firsttodie==pid)
+      { // before timer, got the ack
         break;
       }
+      else
+      { // after timer, kill waiting child and resend
+        kill(pid, SIGTERM);
+      }
+
+      break;
     }
 
     close(s);

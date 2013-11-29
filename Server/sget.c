@@ -3,6 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 
 void forwardmessage(int s, unsigned int const hash, unsigned int *seqhash, struct sockaddr_in const * const sockadd, Message const mes)
 {
@@ -36,6 +41,14 @@ void walkstoredmessages(int s, char const * const destination, struct sockaddr_i
     mes.type = SEND;
     strcpy(mes.destination, destination);
     unsigned int hash = qhash(destination);
+/*
+  printf("Message!\n\tFrom: %s@%s:%d\n\tTo: %s\n\t%s\n"
+      , mes.source
+      , inet_ntoa(sockadd->sin_addr)
+      , ntohs(sockadd->sin_port)
+      , mes.destination
+      , mes.message
+      );*/
 
     int pid = fork();
     if(pid<0)

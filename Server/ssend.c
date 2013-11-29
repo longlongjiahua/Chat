@@ -1,6 +1,11 @@
 #include "ssend.h"
 
 #include <stdio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
 
 void ack(int s, struct sockaddr_in const * const sockadd)
 {
