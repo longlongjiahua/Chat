@@ -8,13 +8,19 @@
 #include <unistd.h>
 
 #include "net.h"
+#include "message.h"
 
 void react(int sock, char buf[], struct sockaddr_in sockaddclient, int slen)
 {
   printf("Received packet from %s:%d\nData: %s\n\n", 
       inet_ntoa(sockaddclient.sin_addr), ntohs(sockaddclient.sin_port), buf);
+}
 
+void actGet()
+{}
 
+void actSend()
+{
 }
 
 int main(int argc, char *argv[])
@@ -39,6 +45,11 @@ int main(int argc, char *argv[])
       diep("fork");
     if(pid == 0)
     {
+      Message mes = atomes(buf);
+      if(mes.type = GET)
+      {}
+      else if(mes.type = SEND)
+      {}
       react(s, buf, sockaddclient, slen);
       sleep(5);
       printf("sending ack.\n");

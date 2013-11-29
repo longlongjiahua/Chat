@@ -6,7 +6,8 @@
 enum msgtype
 {
   GET,
-  SEND
+  SEND,
+  ACK
 };
 
 typedef struct Message
@@ -20,7 +21,5 @@ typedef struct Message
 
 void mestoa(char* const buf, Message const * const message);
 Message atomes(char const * const mes);
-
-char delims[1] = {7};
 
 #endif

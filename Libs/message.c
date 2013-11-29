@@ -6,6 +6,8 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+char delims[1] = {7};
+
 void mestoa(char* const buf, Message const * const message)
 {
   char num[20];
