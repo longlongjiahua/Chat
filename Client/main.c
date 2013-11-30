@@ -43,14 +43,28 @@ int main(int argc, char *argv[])
 
     if (sendto(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, slen)==-1)
       diep("Can not send message to server");
+
+    int curseq = 0;
     while(1) {  //receive message from client 1;
-      sleep(2);
       if(recvfrom(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, (socklen_t * restrict) &slen)==-1)
-      {}
-      else {
-        printf("%s\n", buf);
+        diep("failed to recieve message");
+
+      mes = atomes(&buf);
+      printf("got %d\n", mes.seq);
+      if(mes.type == ACK)
+        break;
+      if(mes.seq == curseq)
+      {
+        printf("%d | From: %s\n%s\n\n", mes.seq, mes.source, mes.message);
+
+        mes.type = ACK;
+        strcpy(mes.source, argv[1]);
+
+        mestoa(&buf, &mes);
+        if (sendto(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, slen)==-1)
+          diep("Couldn't ack.");
+        ++curseq;
       }
-      break;
     }
   }
 

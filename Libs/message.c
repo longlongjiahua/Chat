@@ -43,7 +43,6 @@ Message atomes(char const * const mes)
   message.type = ntohl(atoi(strtok(NULL, delims)));
   strcpy(message.source, strtok(NULL, delims));
   strcpy(message.destination, strtok(NULL, delims));
-  printf("bs2\n");
   strcpy(message.message, strtok(NULL, delims));
 
   free(src);
