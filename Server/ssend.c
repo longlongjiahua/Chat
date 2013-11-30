@@ -27,13 +27,13 @@ void storemessage(Message const * const mes)
 
 void actSend(Message mes, int s, struct sockaddr_in sockadd)
 {
-  printf("Message!\n\tFrom: %s@%s:%d\n\tTo: %s\n\t%s\n"
-      , mes.source
-      , inet_ntoa(sockadd.sin_addr)
-      , ntohs(sockadd.sin_port)
-      , mes.destination
-      , mes.message
-      );
+  /*printf("Message!\n\tFrom: %s@%s:%d\n\tTo: %s\n\t%s\n"*/
+      /*, mes.source*/
+      /*, inet_ntoa(sockadd.sin_addr)*/
+      /*, ntohs(sockadd.sin_port)*/
+      /*, mes.destination*/
+      /*, mes.message*/
+      /*);*/
 
   storemessage(&mes);
   ack(s, &sockadd);

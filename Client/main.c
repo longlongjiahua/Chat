@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
   //case for get message from server
   if(argc == 5 && strncmp(argv[4], "GET",3)==0  ){
-    printf("get\n");
+    /*printf("get\n");*/
 
     mes.seq = 0;
     mes.type = GET;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
         diep("failed to recieve message");
 
       mes = atomes(&buf);
-      printf("got %d\n", mes.seq);
+      /*printf("got %d\n", mes.seq);*/
       if(mes.type == ACK)
         break;
       if(mes.seq == curseq)
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
   }
 
   else if(argc ==7 && strncmp(argv[4], "SEND",4)==0) {
-    printf("send\n");
+    /*printf("send\n");*/
     if (strlen(argv[6]) >= BUFLEN) {
       sprintf(err, "Please make your message smaller than %zu (from %i)\n", strlen(argv[3]), BUFLEN);
       diep(err);
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
       {
         if(recvfrom(s, buf, BUFLEN, 0, (struct sockaddr*) &sockadd, (socklen_t * restrict) &slen)==-1)
           diep("failed recieval of ack.");
-        printf("%s\n", buf);
+        /*printf("%s\n", buf);*/
         exit(0);
       }
 

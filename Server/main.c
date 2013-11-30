@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 //  unsigned int *seqhash = malloc(HASHLEN*sizeof(int));
   int shmkey = 3141;
   int shmid;
-  unsigned int *seqhash;
+  int *seqhash;
   if ((shmid = shmget(shmkey, HASHLEN*sizeof(int), IPC_CREAT | 0666)) < 0) {
     perror("shmget");
     exit(1);
@@ -50,21 +50,21 @@ int main(int argc, char *argv[])
       diep("fork");
     if(pid == 0)
     {
-      printf("bs1\n");
+      /*printf("bs1\n");*/
       Message mes = atomes(buf);
-      printf("%d%d%d\n", mes.type, GET, SEND);
+      /*printf("%d%d%d\n", mes.type, GET, SEND);*/
       if(mes.type == GET)
         actGet(mes, s, sockaddclient, shmkey);
       else if(mes.type == SEND)
         actSend(mes, s, sockaddclient);
       else if(mes.type == ACK)
       {
-        printf("ACK:%d\n", mes.seq);
+        /*printf("ACK:%d\n", mes.seq);*/
         unsigned int hash = qhash(mes.source);
         if(*(seqhash+hash) < mes.seq)
         {
           *(seqhash+hash) = mes.seq;
-          printf("%d < %d\n", (seqhash+hash), mes.seq);
+          /*printf("%d < %d\n", (seqhash+hash), mes.seq);*/
         }
       }
 

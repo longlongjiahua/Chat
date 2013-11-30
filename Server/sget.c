@@ -17,7 +17,7 @@ void forwardmessage(int s, unsigned int const hash, int shmkey, struct sockaddr_
 {
   char buf[BUFLEN];
   mestoa(&buf, &mes);
-  unsigned int *seqhash;
+  int *seqhash;
   int shmid;
 
   if ((shmid = shmget(shmkey, HASHLEN*sizeof(int), 0666)) < 0) {
@@ -36,7 +36,7 @@ void forwardmessage(int s, unsigned int const hash, int shmkey, struct sockaddr_
 
     sleep(2);
     
-    printf("curack: %d | %d >= %d\n", (seqhash+hash), *(seqhash+hash), mes.seq);
+    /*printf("curack: %d | %d >= %d\n", (seqhash+hash), *(seqhash+hash), mes.seq);*/
 
     if(*(seqhash+hash) >= mes.seq)
       break;
@@ -52,7 +52,7 @@ void walkstoredmessages(int s, char const * const destination, struct sockaddr_i
   char parsestring[BUFLEN];
   sprintf(parsestring, "%%%d[^%c]%c%%%d[^%c]%c", BUFLEN, UNITSEP, UNITSEP, BUFLEN, RECORDSEP, RECORDSEP);
 
-  unsigned int *seqhash;
+  int *seqhash;
   int shmid;
 
   if ((shmid = shmget(shmkey, HASHLEN*sizeof(int), 0666)) < 0) {
@@ -89,33 +89,33 @@ void walkstoredmessages(int s, char const * const destination, struct sockaddr_i
       forwardmessage(s, hash, shmkey, sockadd, mes);
       exit(0);
     }
-    printf("%d | %s : %s\n", i, mes.source, mes.message);
+    /*printf("%d | %s : %s\n", i, mes.source, mes.message);*/
   }
 
   fclose(fp);
 
   while(*(seqhash+hash) < i-1)
   {
-    printf("waiting for %d < %d\n", *(seqhash+hash), i-1);
+    /*printf("waiting for %d < %d\n", *(seqhash+hash), i-1);*/
     sleep(1);
   }
   mes.type = ACK;
   mes.seq = 0;
   strcpy(mes.message, "null");
   mestoa(&buf, &mes);
-  printf("KILLCILENTACK\n");
+  /*printf("KILLCILENTACK\n");*/
   sendto(s, buf, BUFLEN, 0, (struct sockaddr*) sockadd, sizeof((*sockadd)));
 
 }
 
 void actGet(Message mes, int s, struct sockaddr_in sockadd, int shmkey)
 {
-  printf("Get request!\n\tFrom: %s@%s:%d\n"
-      , mes.source
-      , inet_ntoa(sockadd.sin_addr)
-      , ntohs(sockadd.sin_port)
-      );
-  unsigned int *seqhash;
+  /*printf("Get request!\n\tFrom: %s@%s:%d\n"*/
+      /*, mes.source*/
+      /*, inet_ntoa(sockadd.sin_addr)*/
+      /*, ntohs(sockadd.sin_port)*/
+      /*);*/
+  int *seqhash;
   int shmid;
 
   if ((shmid = shmget(shmkey, HASHLEN*sizeof(int), 0666)) < 0) {
@@ -128,7 +128,7 @@ void actGet(Message mes, int s, struct sockaddr_in sockadd, int shmkey)
   }
 
   unsigned int hash = qhash(mes.source);
-  *(seqhash+hash) = 0;
+  *(seqhash+hash) = -1;
 
   walkstoredmessages(s, mes.source, &sockadd, shmkey);
 }
